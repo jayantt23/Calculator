@@ -3,9 +3,10 @@ const display = document.querySelector(".display");
 const AC = document.querySelector("#AC");
 const decimal = document.querySelector("#decimal");
 
-let firstNumber;
-let secondNumber;
-let operator;
+let firstNumber = undefined;
+let secondNumber = undefined;
+let operator = "";
+let hasNotDecimal = true;
 
 function add(a, b) {
   return a + b;
@@ -29,3 +30,30 @@ function operate(firstNumber, secondNumber, operator) {
   else if (operator == "-") return subtract(firstNumber, secondNumber);
   else if (operator == "+") return add(firstNumber, secondNumber);
 }
+
+numbers.forEach((number) => {
+  number.addEventListener("click", () => {
+    if (display.textContent.length < 9) {
+      if (display.textContent == "0") {
+        display.textContent = number.textContent;
+      } else {
+        display.textContent += number.textContent;
+      }
+    }
+  });
+});
+
+decimal.addEventListener("click", () => {
+  if (display.textContent.length < 9 && hasNotDecimal) {
+    display.textContent += ".";
+    hasNotDecimal = false;
+  }
+});
+
+AC.addEventListener("click", () => {
+  display.textContent = "0";
+  firstNumber = NaN;
+  secondNumber = NaN;
+  operator = "";
+  hasNotDecimal = true;
+});
