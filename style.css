@@ -64,6 +64,11 @@ button:hover {
   background-color: orange;
 }
 
-.numbers {
+.numbers,
+#decimal {
   background-color: lightseagreen;
+}
+
+.selected {
+  opacity: 90%;
 }
