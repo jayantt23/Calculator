@@ -7,6 +7,8 @@ const equals = document.querySelector("#equals");
 const sign = document.querySelector("#sign");
 const percentage = document.querySelector("#percentage");
 
+const clickEvent = new Event("click");
+
 let firstNumber = undefined;
 let secondNumber = undefined;
 let operator = undefined;
@@ -68,6 +70,34 @@ numbers.forEach((number) => {
   });
 });
 
+document.addEventListener("keydown", (e) => {
+  if (e.key in ["1", "2", "3", "4", "5", "6", "7", "8", "9", "0"]) {
+    if (isDisplayReplace) {
+      display.textContent = e.key;
+      if (e.key != "0") isDisplayReplace = false;
+      if (isOperatorSelected) operator.classList.remove("selected");
+    } else if (display.textContent.length < 9) {
+      display.textContent += e.key;
+    }
+  } else if (e.key == "=") {
+    equals.dispatchEvent(clickEvent);
+  } else if (e.key == ".") {
+    decimal.dispatchEvent(clickEvent);
+  } else if (e.key == "Backspace") {
+    AC.dispatchEvent(clickEvent);
+  } else if (e.key == "/") {
+    operations[0].dispatchEvent(clickEvent);
+  } else if (e.key == "*") {
+    operations[1].dispatchEvent(clickEvent);
+  } else if (e.key == "-") {
+    operations[2].dispatchEvent(clickEvent);
+  } else if (e.key == "+") {
+    operations[3].dispatchEvent(clickEvent);
+  } else if (e.key == "%") {
+    percentage.dispatchEvent(clickEvent);
+  }
+});
+
 decimal.addEventListener("click", () => {
   if (display.textContent.length < 9 && !display.textContent.includes(".")) {
     display.textContent += ".";
@@ -122,8 +152,8 @@ operations.forEach((operation) => {
 });
 
 equals.addEventListener("click", () => {
-  if (isFirstNumDefined && isOperatorSelected) {
-    secondNumber = Number(display.textContent);
+  secondNumber = Number(display.textContent);
+  if (isFirstNumDefined && isOperatorSelected && secondNumber != undefined) {
     display.textContent = round(
       operate(firstNumber, secondNumber, operator.textContent)
     );
