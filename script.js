@@ -5,6 +5,7 @@ const decimal = document.querySelector("#decimal");
 const operations = document.querySelectorAll(".operations");
 const equals = document.querySelector("#equals");
 const sign = document.querySelector("#sign");
+const percentage = document.querySelector("#percentage");
 
 let firstNumber = undefined;
 let secondNumber = undefined;
@@ -42,7 +43,10 @@ function divide(a, b) {
 }
 
 function round(a) {
-  return Math.round(a * 100) / 100;
+  str = "" + Math.floor(a);
+  let decimalPlaces = 1;
+  for (let i = 0; i < 8 - str.length; i++) decimalPlaces *= 10;
+  return Math.round(a * decimalPlaces) / decimalPlaces;
 }
 
 function operate(firstNumber, secondNumber, operator) {
@@ -54,14 +58,12 @@ function operate(firstNumber, secondNumber, operator) {
 
 numbers.forEach((number) => {
   number.addEventListener("click", () => {
-    if (display.textContent.length < 9) {
-      if (isDisplayReplace) {
-        display.textContent = number.textContent;
-        if (number.textContent != "0") isDisplayReplace = false;
-        if (isOperatorSelected) operator.classList.remove("selected");
-      } else {
-        display.textContent += number.textContent;
-      }
+    if (isDisplayReplace) {
+      display.textContent = number.textContent;
+      if (number.textContent != "0") isDisplayReplace = false;
+      if (isOperatorSelected) operator.classList.remove("selected");
+    } else if (display.textContent.length < 9) {
+      display.textContent += number.textContent;
     }
   });
 });
@@ -130,6 +132,15 @@ equals.addEventListener("click", () => {
     isOperatorSelected = false;
     firstNumber = undefined;
     secondNumber = undefined;
+    operator.classList.remove("selected");
     operator = undefined;
   }
+});
+
+sign.addEventListener("click", () => {
+  display.textContent = Number(display.textContent) * -1;
+});
+
+percentage.addEventListener("click", () => {
+  display.textContent = round(Number(display.textContent) / 100);
 });
