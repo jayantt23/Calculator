@@ -60,7 +60,8 @@ button:hover {
   background-color: cornflowerblue;
 }
 
-.operations {
+.operations,
+#equals {
   background-color: orange;
 }
 
@@ -70,5 +71,5 @@ button:hover {
 }
 
 .selected {
-  opacity: 90%;
+  opacity: 80%;
 }
