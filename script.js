@@ -4,6 +4,7 @@ const AC = document.querySelector("#AC");
 const decimal = document.querySelector("#decimal");
 const operations = document.querySelectorAll(".operations");
 const equals = document.querySelector("#equals");
+const sign = document.querySelector("#sign");
 
 let firstNumber = undefined;
 let secondNumber = undefined;
@@ -68,6 +69,7 @@ numbers.forEach((number) => {
 decimal.addEventListener("click", () => {
   if (display.textContent.length < 9 && !display.textContent.includes(".")) {
     display.textContent += ".";
+    isDisplayReplace = false;
   }
 });
 
@@ -91,13 +93,21 @@ operations.forEach((operation) => {
       isDisplayReplace = true;
       isFirstNumDefined = true;
     } else {
-      if (operator == operation) {
+      if (operator == operation && isDisplayReplace) {
         firstNumber = undefined;
         operator.classList.remove("selected");
         operator = undefined;
         isOperatorSelected = false;
         isDisplayReplace = false;
         isFirstNumDefined = false;
+      } else if (!isDisplayReplace) {
+        equals.dispatchEvent(new Event("click"));
+        if (!isFirstNumDefined) firstNumber = Number(display.textContent);
+        operation.classList.add("selected");
+        operator = operation;
+        isOperatorSelected = true;
+        isDisplayReplace = true;
+        isFirstNumDefined = true;
       } else {
         operator.classList.remove("selected");
         operation.classList.add("selected");
